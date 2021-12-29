@@ -54,4 +54,3 @@ class Operator:
         self.call = None
         self.callTimeout = None
         proto.transport.write(output)
-        self.fProtocol.transport.write(output)
