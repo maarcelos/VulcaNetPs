@@ -18,13 +18,13 @@ class Operator:
         message = "Call {callId} ringing for operator {operatorId}".format(callId= call.id, operatorId= self.id)
         self.status = "RINGING"
         self.call = call
-       # self.callTimeout = reactor.callLater(10, self.timeout, proto) 
+        self.callTimeout = reactor.callLater(10, self.timeout, proto) 
         return  message
 
     def answer(self):
         message ="Call {callId} answered by operator {operatorId}".format(callId=self.call.id, operatorId=self.id)
         self.status = "BUSY"
-        #self.callTimeout.cancel()
+        self.callTimeout.cancel()
         self.callTimeout = None
         return message
 
@@ -33,7 +33,7 @@ class Operator:
         message ="Call {callId} rejected by operator {operatorId}".format(callId=self.call.id, operatorId=self.id)
         self.status = "AVAILABLE"
         self.call = None
-       # self.callTimeout.cancel()
+        self.callTimeout.cancel()
         self.callTimeout = None
         return rejecCall, message
     
