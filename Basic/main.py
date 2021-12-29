@@ -1,7 +1,4 @@
 #Classes
-import operator
-
-
 class Call:
     def __init__(self,id):
         self.id = id
@@ -48,7 +45,6 @@ operators.extend([Operator("A"),Operator("B")])
 
 callsQ = []
 inconsistence = 0
-#First UI
 
 while(True):
     if len(callsQ) > 0:

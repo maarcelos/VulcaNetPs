@@ -1,9 +1,11 @@
-import cmd
-from twisted.internet import reactor
-from twisted.internet import protocol
-from twisted.internet.protocol import Protocol
 from twisted.internet.endpoints import TCP4ClientEndpoint, connectProtocol
+from twisted.internet import stdio
+from twisted.protocols import basic
 import json
+import cmd
+from twisted.internet.protocol import Protocol
+from twisted.internet import reactor
+
 
 class Greeter(Protocol):
     def sendMessage(self, msg):
@@ -12,6 +14,7 @@ class Greeter(Protocol):
         message = json.loads(message.decode('utf-8'))
         for m in message['line']:
             print(m)
+
 
 class Commands(cmd.Cmd):
     prompt = ''
@@ -34,8 +37,25 @@ class Commands(cmd.Cmd):
 
 
 
-point = TCP4ClientEndpoint(reactor, "localhost", 5768)
-protocol_instance = Greeter()
-d = connectProtocol(point, protocol_instance)
-reactor.callInThread(Commands(protocol_instance).cmdloop)
-reactor.run()
+class Echo(basic.LineReceiver):
+   from os import linesep as delimiter
+   def __init__(self, console):
+        self.console = console
+        super().__init__() 
+
+   def connectionMade(self):
+        self.setRawMode()
+    
+   def rawDataReceived(self, data):
+        self.console.onecmd(data.decode('utf-8'))
+   
+
+def main():
+    point = TCP4ClientEndpoint(reactor, "localhost", 5678)
+    protocol_instance = Greeter()
+    d = connectProtocol(point, protocol_instance)
+    stdio.StandardIO(Echo(Commands(protocol_instance)))
+    reactor.run()
+
+if __name__ == '__main__':
+    main()

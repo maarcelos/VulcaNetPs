@@ -71,6 +71,6 @@ class QOTDFactory(Factory):
     def buildProtocol(self, addr):
         return QOTD()
 
-endpoint = TCP4ServerEndpoint(reactor, 5768)
+endpoint = TCP4ServerEndpoint(reactor, 5678)
 endpoint.listen(QOTDFactory())
 reactor.run()
