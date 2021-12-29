@@ -53,4 +53,4 @@ class Operator:
         self.status = "AVAILABLE"
         self.call = None
         self.callTimeout = None
-        proto.transport.write(output)
+        
